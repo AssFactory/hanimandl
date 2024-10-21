@@ -102,7 +102,8 @@
 //
 // Hier den Code auf die verwendete Hardware einstellen
 //
-#define HARDWARE_LEVEL 3        // 1 = originales Layout mit Schalter auf Pin 19/22/21
+//                              // hardware level wird per ini definiert
+// #define HARDWARE_LEVEL 3     // 1 = originales Layout mit Schalter auf Pin 19/22/21
                                 // 2 = Layout für Heltec V2 mit Schalter auf Pin 23/19/22
                                 // 3 = Layout für Heltec V3 mit komplett anderer Pinbelegung 
 #define SERVO_ERWEITERT         // definieren, falls die Hardware mit dem alten Programmcode mit Poti aufgebaut wurde oder der Servo zu wenig fährt
@@ -2089,7 +2090,7 @@ void setup()
   pinMode(vext_ctrl_pin, INPUT_PULLDOWN);
 #endif
 
-  Serial.begin(115200);
+  Serial.begin(MONITOR_SPEED);
   while (!Serial) {
   }
 #ifdef isDebug
