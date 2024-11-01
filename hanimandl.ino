@@ -164,9 +164,43 @@
 // ** Definition der pins 
 // ----------------------
 
+#if HARDWARE_LEVEL == 4
+// Display
+//U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ 21, /* clock=*/ 18, /* data=*/ 17);
+//U8G2_ST7920_128X64_F_SW_SPI u8g2(U8G2_R0,/* clk=*/ 14,  /*data=*/ 13,/*cs=*/15);
+U8G2_ST7920_128X64_F_HW_SPI u8g2(U8G2_R0,/*cs=*/ 5, /*reset*/ U8X8_PIN_NONE);
+//const int displayLight = 12;
+
+// Rotary Encoder
+const int outputA  = 32;  // Clk
+const int outputB  = 33;  // DT 
+const int outputSW = 27;
+
+// Servo
+const int servo_pin = 33;
+
+// 3x Schalter Ein 1 - Aus - Ein 2
+const int switch_betrieb_pin = 26;
+//const int switch_vcc_pin     = 41;     // <- Vcc
+const int switch_setup_pin   = 25;
+//const int vext_ctrl_pin      = 36;     // Vext control pin
+
+// Taster 
+//const int button_start_vcc_pin =  7;  // <- Vcc
+const int button_start_pin     =  16;
+//const int button_stop_vcc_pin  =  5;  // <- Vcc
+const int button_stop_pin      =  17;
+
+// Wägezelle-IC
+const int hx711_sck_pin = 22;
+const int hx711_dt_pin  = 21;
+
+// Buzzer - aktiver Piezo
+static int buzzer_pin = 4;
+
 // Heltec Version 3
 //
-#if HARDWARE_LEVEL == 3
+#elif HARDWARE_LEVEL == 3
 // OLED fuer Heltec WiFi Kit 32 (ESP32 onboard OLED) 
 //U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock=*/ 15, /* data=*/ 4, /* reset=*/ 16);
 // für den ESP32 Arduino core Version ≥ 2.x brauchen wir HW I2C, mit SW I2C läuft der code zu langsam
@@ -280,7 +314,7 @@ const int hx711_dt_pin  = 5;
 // Buzzer - aktiver Piezo
 static int buzzer_pin = 25;
 #else
-#error Hardware Level nicht definiert! Korrektes #define setzen!
+// #error Hardware Level nicht definiert! Korrektes #define setzen!
 #endif
 
 
@@ -2110,15 +2144,15 @@ void setup()
 
 // switch Vcc / GND on normal pins for convenient wiring
 // output is 3.3V for VCC
-  digitalWrite (switch_vcc_pin, HIGH); 
-  digitalWrite (button_start_vcc_pin, HIGH); 
-  digitalWrite (button_stop_vcc_pin, HIGH); 
+//  digitalWrite (switch_vcc_pin, HIGH); 
+//  digitalWrite (button_start_vcc_pin, HIGH); 
+//  digitalWrite (button_stop_vcc_pin, HIGH); 
   
 //  pinMode (_GND, OUTPUT);     // turn on GND pin first (important!)
 // turn on VCC power
-  pinMode (switch_vcc_pin, OUTPUT);
-  pinMode (button_start_vcc_pin, OUTPUT);
-  pinMode (button_stop_vcc_pin, OUTPUT);
+ // pinMode (switch_vcc_pin, OUTPUT);
+ // pinMode (button_start_vcc_pin, OUTPUT);
+ // pinMode (button_stop_vcc_pin, OUTPUT);
 
 // Buzzer
   pinMode(buzzer_pin, OUTPUT);
@@ -2148,7 +2182,7 @@ void setup()
   }
 
 // Boot Screen
-  u8g2.setBusClock(800000);   // experimental
+  u8g2.setBusClock(600000);   // experimental
   u8g2.begin();
   u8g2.enableUTF8Print();
   u8g2.clearBuffer();
